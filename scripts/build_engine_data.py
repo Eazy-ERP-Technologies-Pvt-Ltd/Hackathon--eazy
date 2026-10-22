@@ -309,6 +309,25 @@ def run_pipeline():
             "whatsapp_message": f"📋 SUPERVISOR ALERT: Rep {item['entity_name']} has abnormal check-in volume with low strike rate. Mandate joint manager beat ride tomorrow."
         })
 
+    # 8. Retailer 360 Profiles
+    retailers_sample = []
+    for _, r in retailers.sort_values(by='sales_value_12m', ascending=False).head(120).iterrows():
+        retailers_sample.append({
+            "retailer_id": r['retailer_id'],
+            "retailer_name": r['retailer_name'],
+            "retailer_type": r['retailer_type'],
+            "tier": r['tier'],
+            "city": r['city'],
+            "distributor_name": r['distributor_name'],
+            "rep_name": r['rep_name'],
+            "credit_limit": float(r['credit_limit']),
+            "last_order_date": str(r['last_order_date'].strftime('%Y-%m-%d')) if pd.notnull(r['last_order_date']) else "N/A",
+            "days_since_last_order": int(r['days_since_last_order']) if pd.notnull(r['days_since_last_order']) else 999,
+            "sales_value_12m": float(r['sales_value_12m']),
+            "orders_12m": int(r['orders_12m']),
+            "status": r['status']
+        })
+
     # Master Output Payload
     payload = {
         "metadata": {
@@ -346,7 +365,8 @@ def run_pipeline():
         "territories": territories_list,
         "categories": categories_list,
         "schemes": schemes_list,
-        "reps": reps_list[:30]
+        "reps": reps_list[:30],
+        "retailers": retailers_sample
     }
 
     # Save to Backend & Frontend data directories
