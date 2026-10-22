@@ -92,3 +92,18 @@ The frontend features a high-contrast executive white theme powered by Chart.js 
 4. **Distributor Stock Health Profile (`#stockAgingCanvas`)**: Doughnut chart displaying active inventory (300,916 units) vs slow-moving 90+ days (13,369 units) and critical 180+ days (2,717 units).
 5. **Field Rep Performance Anomaly (`#repProductivityCanvas`)**: Dual-axis bar chart correlating rep strike rate against non-compliant drive-by visits (<10 min).
 6. **Scheme Commercial ROI (`#schemeRoiCanvas`)**: Grouped comparative bar chart quantifying promotional spend vs incremental sales lift across trade incentive programs.
+
+---
+
+## 6. Impact Measurement & A/B Testing Architecture (`P5`)
+
+The system integrates a quantitative measurement framework to isolate causal growth and prove financial return:
+
+1. **Difference-in-Differences (DiD) Quasi-Experiment:**
+   - **Treatment Group (6 Territories):** Mumbai, Kolkata, Delhi, Bangalore, Lucknow, Jaipur (Active algorithmic prescriptives).
+   - **Control Group (6 Territories):** Chennai, Hyderabad, Ahmedabad, Pune, Patna, Indore (Status quo static beats).
+   - **Econometric Specification:** Evaluates Throughput per Productive Call (TPC) and Net Revenue Lift against seasonal baselines ($p < 0.05$).
+2. **Interactive Real-Time ROI Simulator (`#pane-measurement`):**
+   - Models dynamic recovery across Ghost Stockout auto-allocation, Silent Churn win-back, Rep strike-rate lift, and Aged Inventory liquidation.
+3. **Execution Blueprint:** Detailed in [`docs/specs/AB_TESTING_FRAMEWORK.md`](file:///Users/bhanurathore/projects/hack/docs/specs/AB_TESTING_FRAMEWORK.md).
+

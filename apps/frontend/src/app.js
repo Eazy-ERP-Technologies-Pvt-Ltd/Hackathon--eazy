@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupRetailerFilters();
   setupCopilot();
   setupModal();
+  setupMeasurementSimulator();
   await loadData();
 });
 
@@ -71,7 +72,8 @@ function switchTab(tabId) {
     retailer360: ['Retailer 360° Account Inspector', 'Profile audits for 3,000 retailers: purchase health, dormancy, and tier affinities', 'Retailer 360°'],
     reps: ['Field Force Productivity & Audit Roster', 'Beat strike-rate compliance, drive-by visits (<10 min), and GPS verification', 'Field Force Health'],
     schemes: ['Trade Schemes & Margin Rebates Efficiency', 'Promotional spend vs. incremental sales lift across 11,903 allocations', 'Schemes & Promos'],
-    copilot: ['Strategy AI Copilot', 'Autonomous agent reasoning over unified distribution and inventory data', 'Strategy Copilot']
+    copilot: ['Strategy AI Copilot', 'Autonomous agent reasoning over unified distribution and inventory data', 'Strategy Copilot'],
+    measurement: ['Prescriptive Impact & Measurement Framework', 'Interactive Topline Lift Simulator & 60-Day Scientific A/B Testing Protocol', 'Impact & Measurement']
   };
 
   if (titles[tabId]) {
@@ -1126,3 +1128,64 @@ function openModal(title, content) {
   preview.textContent = content;
   modal.classList.add('open');
 }
+
+// 8. Measurement Simulator
+function setupMeasurementSimulator() {
+  const sliderGhost = document.getElementById('sliderGhost');
+  const sliderChurn = document.getElementById('sliderChurn');
+  const sliderRep = document.getElementById('sliderRep');
+  const sliderStock = document.getElementById('sliderStock');
+
+  if (!sliderGhost || !sliderChurn || !sliderRep || !sliderStock) return;
+
+  function recalculate() {
+    const vGhost = parseFloat(sliderGhost.value);
+    const vChurn = parseFloat(sliderChurn.value);
+    const vRep = parseFloat(sliderRep.value);
+    const vStock = parseFloat(sliderStock.value);
+
+    // Label updates
+    document.getElementById('valGhost').textContent = `${vGhost}%`;
+    document.getElementById('valChurn').textContent = `${vChurn}%`;
+    document.getElementById('valRep').textContent = `${vRep}%`;
+    document.getElementById('valStock').textContent = `${vStock}%`;
+
+    // Calculations
+    const ghostBaseLakhs = 51.66;
+    const ghostRecLakhs = (ghostBaseLakhs * vGhost) / 100;
+    const ghostRecCr = ghostRecLakhs / 100;
+
+    const churnBaseCr = 17.20;
+    const churnRecCr = (churnBaseCr * vChurn) / 100;
+    const churnStoresRec = Math.round((1381 * vChurn) / 100);
+
+    const baseStrike = 16.5;
+    const strikeDelta = Math.max(0, vRep - baseStrike);
+    const repRecCr = (strikeDelta / 100) * 4623 * 11500 / 10000000;
+
+    const stockBaseCr = 20.02;
+    const stockRecCr = (stockBaseCr * vStock) / 100;
+    const stockUnitsRec = Math.round((16086 * vStock) / 100);
+
+    // Text updates
+    document.getElementById('recGhost').textContent = `₹${ghostRecLakhs.toFixed(2)} Lakhs`;
+    document.getElementById('recChurn').textContent = `₹${churnRecCr.toFixed(2)} Cr (${churnStoresRec} stores reactivated)`;
+    document.getElementById('recRep').textContent = `₹${repRecCr.toFixed(2)} Cr (from bottom 3 reps)`;
+    document.getElementById('recStock').textContent = `₹${stockRecCr.toFixed(2)} Cr (${stockUnitsRec.toLocaleString()} units)`;
+
+    // Total Topline Lift
+    const totalToplineCr = ghostRecCr + churnRecCr + repRecCr;
+    const baselineRevCr = 62.27;
+    const pctLift = (totalToplineCr / baselineRevCr) * 100;
+
+    document.getElementById('simTotalRev').textContent = `₹${totalToplineCr.toFixed(2)} Cr`;
+    document.getElementById('simPctLift').textContent = `+${pctLift.toFixed(1)}% Baseline Revenue Lift`;
+  }
+
+  [sliderGhost, sliderChurn, sliderRep, sliderStock].forEach(slider => {
+    slider.addEventListener('input', recalculate);
+  });
+
+  recalculate();
+}
+

@@ -72,7 +72,7 @@
 - [x] `TASK-P5-101`: Leakage Detection Accuracy & Revenue Calculation Verification
   - **Inputs:** 17,479 sales orders and distributor inventory records
   - **Outputs:** Verified calculation: ₹51.66L Ghost Stockouts (542 lines), ₹17.20Cr Silent Churn (1,381 stores).
-- [ ] `TASK-P5-102`: A/B Testing Measurement Framework
-  - **Inputs:** Control vs Treatment route protocol
-  - **Outputs:** `docs/specs/AB_TESTING_FRAMEWORK.md`
-  - **Validation:** Statistical formula for Throughput per Productive Call lift over 60 days.
+- [x] `TASK-P5-102`: A/B Testing Measurement Framework & Interactive Simulator
+  - **Inputs:** Control vs Treatment territory design across 12 sales territories
+  - **Outputs:** `docs/specs/AB_TESTING_FRAMEWORK.md`, interactive `#pane-measurement` tab in `apps/frontend/src/index.html`
+  - **Validation:** Difference-in-Differences (DiD) econometric specification, interactive 4-lever topline lift simulator, and 30-60-90 day execution roadmap.

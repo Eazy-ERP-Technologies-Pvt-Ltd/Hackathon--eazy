@@ -49,6 +49,9 @@
         <button class="nav-item" data-tab="copilot">
           <span class="icon">🤖</span> Strategy Copilot
         </button>
+        <button class="nav-item" data-tab="measurement">
+          <span class="icon">📈</span> Impact & Measurement
+        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -535,6 +538,183 @@
             <button class="quick-chip" data-q="What is the 30-day win-back strategy for the 1,381 silently churned retailers?">Silent Churn Win-Back Plan</button>
             <button class="quick-chip" data-q="Audit rep SP005, SP017, and SP023 and give me field compliance directives.">Rep Beat Compliance Audit</button>
             <button class="quick-chip" data-q="Which schemes should management cancel, and where should the budget be reallocated?">Scheme Budget Optimization</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 8: IMPACT & MEASUREMENT FRAMEWORK -->
+      <div class="tab-pane" id="pane-measurement">
+        <!-- Section Intro -->
+        <div class="section-intro">
+          <div>
+            <h3>Prescriptive Action & Impact Measurement Framework</h3>
+            <p>Interactive Topline Lift Simulator, 60-Day Difference-in-Differences (DiD) A/B Testing Protocol, and Phased Execution Roadmap.</p>
+          </div>
+          <div class="intro-actions">
+            <button class="btn btn-secondary" onclick="window.print()">
+              <span>🖨️</span> Print Executive Action Sheet
+            </button>
+          </div>
+        </div>
+
+        <!-- Topline Lift Interactive Simulator -->
+        <div class="simulator-card">
+          <div class="simulator-header">
+            <div>
+              <span class="sim-badge">EXECUTIVE ROI CALCULATOR</span>
+              <h4>Interactive Growth Lift & Working Capital Simulator</h4>
+              <p>Adjust execution levers to model 60-day financial recovery across the 4 leakage vectors.</p>
+            </div>
+            <div class="sim-total-box">
+              <span class="sim-total-lbl">Projected Annual Topline Lift</span>
+              <div class="sim-total-num" id="simTotalRev">₹5.09 Cr</div>
+              <span class="sim-total-sub" id="simPctLift">+8.2% Baseline Revenue Lift</span>
+            </div>
+          </div>
+
+          <div class="sim-controls-grid">
+            <div class="sim-control-item">
+              <div class="sim-control-header">
+                <label for="sliderGhost">1. Ghost Stockout Auto-Fulfillment</label>
+                <span class="sim-val" id="valGhost">85%</span>
+              </div>
+              <input type="range" id="sliderGhost" min="0" max="100" value="85" step="5" />
+              <div class="sim-impact-tag">
+                Recovered: <strong id="recGhost">₹43.91 Lakhs</strong> (of ₹51.66L)
+              </div>
+            </div>
+
+            <div class="sim-control-item">
+              <div class="sim-control-header">
+                <label for="sliderChurn">2. Silent Churn Win-Back Rate</label>
+                <span class="sim-val" id="valChurn">20%</span>
+              </div>
+              <input type="range" id="sliderChurn" min="0" max="50" value="20" step="5" />
+              <div class="sim-impact-tag">
+                Recovered: <strong id="recChurn">₹3.44 Cr</strong> (276 stores reactivated)
+              </div>
+            </div>
+
+            <div class="sim-control-item">
+              <div class="sim-control-header">
+                <label for="sliderRep">3. Field Rep Strike Rate Improvement</label>
+                <span class="sim-val" id="valRep">40%</span>
+              </div>
+              <input type="range" id="sliderRep" min="16" max="60" value="40" step="2" />
+              <div class="sim-impact-tag">
+                Recovered: <strong id="recRep">₹1.21 Cr</strong> (from bottom 3 reps)
+              </div>
+            </div>
+
+            <div class="sim-control-item">
+              <div class="sim-control-header">
+                <label for="sliderStock">4. Aged Inventory Liquidation (90d+)</label>
+                <span class="sim-val" id="valStock">30%</span>
+              </div>
+              <input type="range" id="sliderStock" min="0" max="60" value="30" step="5" />
+              <div class="sim-impact-tag">
+                Cash Unlocked: <strong id="recStock">₹6.01 Cr</strong> (4,826 units)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- A/B Testing Protocol Section -->
+        <div class="panel" style="margin-top: 24px;">
+          <div class="panel-header">
+            <div>
+              <h3>60-Day Scientific A/B Testing Measurement Protocol</h3>
+              <p class="chart-sub">Quasi-experimental Difference-in-Differences (DiD) validation across 12 sales territories</p>
+            </div>
+            <span class="panel-tag">Statistical Rigor (p &lt; 0.05)</span>
+          </div>
+
+          <div class="ab-test-grid">
+            <div class="ab-col treatment">
+              <div class="ab-col-header">
+                <span class="ab-badge badge-treatment">TREATMENT GROUP (6 Territories)</span>
+                <h4>Algorithmic Prescriptive Engine Active</h4>
+                <p>Mumbai, Kolkata, Delhi, Bangalore, Lucknow, Jaipur</p>
+              </div>
+              <ul class="ab-features">
+                <li><span>✓</span> <strong>Real-time Ghost Stockout Auto-Lock:</strong> Direct dispatch queue without phone delays.</li>
+                <li><span>✓</span> <strong>08:30 AM Morning Beat WhatsApp Directives:</strong> Algorithmic push with custom SKU pitches.</li>
+                <li><span>✓</span> <strong>Day 21 Silent Churn Triggers:</strong> Targeted ASM win-back with SCH02/SCH03 bundle rebates.</li>
+                <li><span>✓</span> <strong>Geofenced Beat Pruning:</strong> Mandatory 15-min check-in; bottom stops converted to phone calls.</li>
+              </ul>
+            </div>
+
+            <div class="ab-col control">
+              <div class="ab-col-header">
+                <span class="ab-badge badge-control">CONTROL GROUP (6 Territories)</span>
+                <h4>Status Quo / Standard Protocol</h4>
+                <p>Chennai, Hyderabad, Ahmedabad, Pune, Patna, Indore</p>
+              </div>
+              <ul class="ab-features">
+                <li><span>•</span> Standard static beat cycles and manual dealer order taking.</li>
+                <li><span>•</span> Traditional batch ERP inventory sync (24-48 hr latency).</li>
+                <li><span>•</span> Standard monthly review cycles without automated inactivity triggers.</li>
+                <li><span>•</span> Historical scheme promotions without algorithmic targeting.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="did-formula-box">
+            <div class="did-title">Mathematical Measurement Specification (Difference-in-Differences):</div>
+            <div class="did-formula">
+              $$\Delta \text{Topline Lift} = \left( \bar{Y}_{\text{Treatment, Post}} - \bar{Y}_{\text{Treatment, Pre}} \right) - \left( \bar{Y}_{\text{Control, Post}} - \bar{Y}_{\text{Control, Pre}} \right)$$
+            </div>
+            <div class="did-meta">
+              <span><strong>Primary Metric:</strong> Throughput per Productive Call (TPC in ₹ Lakhs)</span>
+              <span><strong>Secondary Metric:</strong> Order Fill Rate (%) &amp; Store Re-order Frequency</span>
+              <span><strong>Guardrail:</strong> Gross Contribution Margin % (must not degrade &gt;0.5%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 30-60-90 Day Phased Execution Roadmap -->
+        <div class="roadmap-card" style="margin-top: 24px;">
+          <div class="panel-header">
+            <div>
+              <h3>30-60-90 Day Management Implementation Roadmap</h3>
+              <p class="chart-sub">Operational execution milestones to realize +8% to +12% topline lift</p>
+            </div>
+            <span class="panel-tag">Execution Blueprint</span>
+          </div>
+
+          <div class="roadmap-steps-grid">
+            <div class="roadmap-phase">
+              <div class="phase-badge phase-1">PHASE 1: DAYS 1 – 15</div>
+              <h4>Immediate Leakage Containment</h4>
+              <ul class="phase-bullets">
+                <li>Connect DMS secondary booking to distributor WMS buffers to eliminate ₹51.66L in Ghost Stockouts.</li>
+                <li>Deploy automated WhatsApp re-engagement directives to top 200 dormant Tier A/B accounts.</li>
+                <li>Instantly terminate promotional spending on value-destroying schemes (SCH05 and SCH06).</li>
+              </ul>
+              <div class="phase-target">Target: +₹1.20 Cr immediate monthly revenue lift</div>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-badge phase-2">PHASE 2: DAYS 16 – 45</div>
+              <h4>Field Force & Beat Restructuring</h4>
+              <ul class="phase-bullets">
+                <li>Prune bottom 25% non-productive stops for reps SP005, SP017, SP023 into bi-weekly tele-sales calls.</li>
+                <li>Enforce geofenced check-ins with mandatory 15-minute stay per physical store visit.</li>
+                <li>Reallocate ₹18.5L in promotional savings into targeted WhatsApp pushes for SCH02 (LED Festive).</li>
+              </ul>
+              <div class="phase-target">Target: Field strike rate lifted from 16.5% to 40%+</div>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-badge phase-3">PHASE 3: DAYS 46 – 60</div>
+              <h4>Cross-Depot Balancing & DiD Audit</h4>
+              <ul class="phase-bullets">
+                <li>Reallocate 16,086 slow-moving units (90d+ aged stock) to deficit territories with dealer liquidation rebates.</li>
+                <li>Run automated Difference-in-Differences statistical audit across Treatment vs Control territories.</li>
+                <li>Roll out validated prescriptive algorithms to remaining 6 control territories.</li>
+              </ul>
+              <div class="phase-target">Target: ₹6.0 Cr working capital unlocked; +10.5% sustained lift</div>
+            </div>
           </div>
         </div>
       </div>
