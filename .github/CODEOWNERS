@@ -1,0 +1,24 @@
+# GitHub Code Ownership Definition
+# Aligns with 5-Person AI Collaborative Role Matrix
+
+# Role P1: Frontend Lead
+/apps/frontend/              @team-frontend
+/docs/specs/ui/              @team-frontend
+
+# Role P2: Backend Lead
+/apps/backend/               @team-backend
+/docs/specs/api/             @team-backend
+
+# Role P3: AI & Intelligence Lead
+/apps/ai-service/            @team-ai
+/docs/specs/ai/              @team-ai
+
+# Role P4: Shared Infra & DevOps Lead
+/packages/shared/            @team-infra @team-lead
+/infra/                      @team-infra
+/.github/                    @team-infra
+
+# Role P5: Product Architecture & QA Lead
+/docs/tasks/                 @team-qa @team-lead
+/tests/                      @team-qa
+/docs/                       @team-qa

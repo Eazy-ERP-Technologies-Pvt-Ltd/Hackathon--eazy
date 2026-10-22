@@ -22,46 +22,54 @@
 
 ---
 
-## Sprint 1: Core Feature Development
+## Sprint 1: Data Unification & Opportunity Loss Detection Engine
 
 ### P1: Frontend Team (`apps/frontend/`)
-- [ ] `TASK-P1-101`: Build shared App Shell (Navbar, Sidebar, Theme Switcher)
-  - **Inputs:** `docs/specs/ui/`, `packages/shared/contracts/`
-  - **Outputs:** `apps/frontend/src/components/layout/`
-  - **Validation:** Responsive across mobile/desktop, zero console errors.
-- [ ] `TASK-P1-102`: Implement AI Prompt & Stream View
-  - **Inputs:** `packages/shared/contracts/ai.ts`
-  - **Outputs:** `apps/frontend/src/features/chat/`
-  - **Validation:** Real-time token streaming and message history.
+- [ ] `TASK-P1-101`: Build Executive Leakage Dashboard & Revenue-at-Risk Cockpit
+  - **Inputs:** `packages/shared/contracts/growth-engine.ts`, `docs/specs/ui/`
+  - **Outputs:** `apps/frontend/src/features/dashboard/LeakageCockpit.js`
+  - **Validation:** Visualizes critical stockouts, silent churn, and unproductive beat stops with revenue filter toggles.
+- [ ] `TASK-P1-102`: Build Field Rep Daily Beat & Prescriptive Action Sheet
+  - **Inputs:** `packages/shared/contracts/growth-engine.ts`
+  - **Outputs:** `apps/frontend/src/features/field/BeatSheet.js`
+  - **Validation:** Renders prioritized outlet visit cards with SKU pitch quantities and WhatsApp push trigger.
 
 ### P2: Backend Team (`apps/backend/`)
-- [ ] `TASK-P2-101`: Implement Healthcheck & Core API Router
-  - **Inputs:** `docs/CONTRACTS.md`
-  - **Outputs:** `apps/backend/src/routes/health.ts`
-  - **Validation:** `GET /health` returns `{ success: true, status: "healthy" }`.
-- [ ] `TASK-P2-102`: AI Inference Gateway & Proxy
-  - **Inputs:** `packages/shared/contracts/ai.ts`
-  - **Outputs:** `apps/backend/src/routes/ai.ts`
-  - **Validation:** Forwards client requests to `apps/ai-service/` with auth headers.
+- [ ] `TASK-P2-101`: Ingestion Pipeline & Relational Schema for 5 Core Datasets
+  - **Inputs:** Retailer Master, SKU Master, Schemes & Promotions, DMS, Inventory, SFA logs
+  - **Outputs:** `apps/backend/src/models/` and `apps/backend/src/services/ingestion.ts`
+  - **Validation:** Clean entity joins across Retailer Master, SKU Master, DMS, WMS, and SFA.
+- [ ] `TASK-P2-102`: Core Opportunity Loss Engine & API Router
+  - **Inputs:** Cleaned transactions and multi-echelon stock levels
+  - **Outputs:** `apps/backend/src/services/loss-engine.ts`, `apps/backend/src/routes/leakages.ts`
+  - **Validation:** Detects Phantom Stockouts, Silent Churn, and Field Force Drain; computes `revenue_at_risk`.
 
 ### P3: AI & Intelligence Team (`apps/ai-service/`)
-- [ ] `TASK-P3-101`: Setup LLM Inference Provider Router (OpenAI / Gemini / Anthropic / Local)
-  - **Inputs:** Environment variables (`OPENAI_API_KEY`, `GEMINI_API_KEY`)
-  - **Outputs:** `apps/ai-service/src/providers/`
-  - **Validation:** Dispatches prompt and parses structured JSON output.
-- [ ] `TASK-P3-102`: Implement Context/RAG Retrieval Engine
-  - **Inputs:** Ingestion document format
-  - **Outputs:** `apps/ai-service/src/rag/`
-  - **Validation:** Semantic retrieval returns top-k relevant snippets.
+- [ ] `TASK-P3-101`: Prescriptive Action Generation Pipeline (LLM Directive Layer)
+  - **Inputs:** Deterministic JSON leakage payloads from Backend (`P2`)
+  - **Outputs:** `apps/ai-service/src/agents/prescriptive-action.ts`
+  - **Validation:** Emits structured 3-bullet Executive Memos and localized 08:30 AM Rep Pitch notifications.
+- [ ] `TASK-P3-102`: SKU Affinity & Scheme Optimization Engine
+  - **Inputs:** Store purchase history, SKU clusters, active Schemes and Promotions catalog
+  - **Outputs:** `apps/ai-service/src/agents/scheme-optimizer.ts`
+  - **Validation:** Matches churned retailers with high-margin promotional bundles to maximize win-back probability.
 
 ### P4: DevOps & Shared Infra (`packages/shared/`, `infra/`)
-- [ ] `TASK-P4-101`: Setup GitHub Actions CI Pipeline
-  - **Inputs:** `.github/workflows/ci.yml`
-  - **Outputs:** Automated linting, type-checking, contract validation.
-  - **Validation:** Runs cleanly on pull requests.
+- [ ] `TASK-P4-101`: Define Growth Engine Contracts & DTOs
+  - **Inputs:** Data dictionary and schema specifications
+  - **Outputs:** `packages/shared/contracts/growth-engine.ts`
+  - **Validation:** Full TypeScript types for Master Data, Invoices, Inventory, SFA logs, and Directives.
+- [ ] `TASK-P4-102`: Feature Store Setup & Mock Data Seeder
+  - **Inputs:** Synthetic data generation logic
+  - **Outputs:** `infra/seed/data-generator.py`, updated `infra/docker-compose.yml`
+  - **Validation:** Seeds 50+ stores, multi-SKU inventory, and 30-day beat history.
 
 ### P5: Product & QA (`tests/`, `docs/`)
-- [ ] `TASK-P5-101`: End-to-End Health & Flow Integration Test
-  - **Inputs:** `apps/frontend`, `apps/backend`, `apps/ai-service`
-  - **Outputs:** `tests/e2e/health.test.ts`
-  - **Validation:** Verifies all 3 microservices respond and connect cleanly.
+- [ ] `TASK-P5-101`: Leakage Detection Accuracy & Revenue Calculation Tests
+  - **Inputs:** Synthetic edge cases (e.g., zero cover, idle distributor stock, 0% strike rate)
+  - **Outputs:** `tests/integration/loss-engine.test.ts`
+  - **Validation:** Verified calculation of `revenue_at_risk` and Days of Cover (DoC).
+- [ ] `TASK-P5-102`: A/B Testing Measurement Framework & Documentation
+  - **Inputs:** Control vs Treatment route protocol
+  - **Outputs:** `docs/specs/AB_TESTING_FRAMEWORK.md`
+  - **Validation:** Clear statistical formula for Throughput per Productive Call lift.
