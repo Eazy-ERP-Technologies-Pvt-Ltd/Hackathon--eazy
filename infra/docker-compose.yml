@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Person 1: Frontend Client
+  frontend:
+    build:
+      context: ..
+      dockerfile: infra/docker/frontend.Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+  # Person 2: Core Backend API
+  backend:
+    build:
+      context: ..
+      dockerfile: infra/docker/backend.Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - AI_SERVICE_URL=http://ai-service:5000/infer
+      - DATABASE_URL=postgres://hack:hackpass@postgres:5432/hackdb
+    depends_on:
+      - ai-service
+      - postgres
+
+  # Person 3: AI Intelligence Engine
+  ai-service:
+    build:
+      context: ..
+      dockerfile: infra/docker/ai-service.Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+  # Database & State
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: hack
+      POSTGRES_PASSWORD: hackpass
+      POSTGRES_DB: hackdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
