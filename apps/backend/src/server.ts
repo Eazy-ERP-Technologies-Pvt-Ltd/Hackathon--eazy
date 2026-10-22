@@ -1,6 +1,15 @@
 import http from 'http';
 import { handleHealthCheck } from './routes/health';
 import { proxyAIInference } from './routes/ai';
+import {
+  handleGetSummary,
+  handleGetLeakages,
+  handleGetDirectives,
+  handleGetTerritories,
+  handleGetCategories,
+  handleGetSchemes,
+  handleGetReps
+} from './routes/growth';
 import { AIInferenceRequest } from '../../../packages/shared/contracts/ai';
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
@@ -44,6 +53,118 @@ const server = http.createServer(async (req, res) => {
           error: { code: 'INVALID_JSON', message: 'Failed to parse JSON body' },
           meta: { timestamp: new Date().toISOString(), requestId: `err_${Date.now()}` }
         }));
+      }
+    });
+    return;
+  }
+
+  // --- Growth Engine REST Routes ---
+  if (url.pathname === '/api/v1/engine/summary' && req.method === 'GET') {
+    try {
+      const resp = handleGetSummary();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(resp));
+    } catch (e: any) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: { message: e.message } }));
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/v1/engine/leakages' && req.method === 'GET') {
+    try {
+      const cat = url.searchParams.get('category') || undefined;
+      const sev = url.searchParams.get('severity') || undefined;
+      const resp = handleGetLeakages(cat, sev);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(resp));
+    } catch (e: any) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: { message: e.message } }));
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/v1/engine/directives' && req.method === 'GET') {
+    try {
+      const resp = handleGetDirectives();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(resp));
+    } catch (e: any) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: { message: e.message } }));
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/v1/engine/territories' && req.method === 'GET') {
+    try {
+      const resp = handleGetTerritories();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(resp));
+    } catch (e: any) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: { message: e.message } }));
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/v1/engine/categories' && req.method === 'GET') {
+    try {
+      const resp = handleGetCategories();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(resp));
+    } catch (e: any) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: { message: e.message } }));
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/v1/engine/schemes' && req.method === 'GET') {
+    try {
+      const resp = handleGetSchemes();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(resp));
+    } catch (e: any) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: { message: e.message } }));
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/v1/engine/reps' && req.method === 'GET') {
+    try {
+      const resp = handleGetReps();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(resp));
+    } catch (e: any) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: { message: e.message } }));
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/v1/directives/dispatch' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          success: true,
+          data: {
+            directiveId: payload.directiveId,
+            status: 'DISPATCHED_TO_WHATSAPP',
+            recipientPhone: payload.phone || '+91-9876543210',
+            dispatchedAt: new Date().toISOString()
+          },
+          meta: { timestamp: new Date().toISOString(), requestId: `disp_${Date.now()}` }
+        }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: { message: 'Invalid payload' } }));
       }
     });
     return;

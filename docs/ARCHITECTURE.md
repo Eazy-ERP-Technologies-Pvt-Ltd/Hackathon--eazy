@@ -40,7 +40,7 @@ To prevent port collisions across local development and multi-container environm
 | :--- | :--- | :--- | :--- | :--- |
 | **Frontend Web** | `3000` | `http://localhost:3000` | Web UI & SPA Dashboard | `P1` |
 | **Backend API** | `8000` | `http://localhost:8000` | Core Business API & Auth | `P2` |
-| **AI Engine** | `5000` | `http://localhost:5000` | LLM Agents & Inference | `P3` |
+| **AI Engine** | `5050` | `http://localhost:5050` | LLM Agents & Inference (Port 5050 used to avoid macOS AirPlay collision) | `P3` |
 | **Primary Database** | `5432` | `localhost:5432` | PostgreSQL (or SQLite local) | `P2` / `P4` |
 | **Vector DB / Cache**| `6379` | `localhost:6379` | Redis / Chroma / Qdrant | `P3` / `P4` |
 
