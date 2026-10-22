@@ -33,6 +33,10 @@
   - **Inputs:** `packages/shared/contracts/growth-engine.ts`
   - **Outputs:** `apps/frontend/src/features/field/BeatSheet.js`, WhatsApp dispatch modal in `apps/frontend/src/app.js`
   - **Validation:** Renders prioritized outlet visit cards with SKU pitch quantities and working WhatsApp push modal.
+- [x] `TASK-P1-103`: Interactive Chart.js Visual Suite & Executive White Theme
+  - **Inputs:** Chart.js CDN, `engineData` telemetry across territories, categories, leakages, inventory, reps, and schemes.
+  - **Outputs:** `apps/frontend/src/index.html`, `apps/frontend/src/styles.css`, `apps/frontend/src/app.js`
+  - **Validation:** 6 interactive responsive charts: Territory Grouped Bars, Category Revenue Doughnut, Opportunity Loss Vectors, Stock Health Profile, Rep Strike Rate vs Drive-Bys, and Scheme Commercial ROI. Full executive white theme with high-contrast palette and tab-switch auto-resizing.
 
 ### P2: Backend Team (`apps/backend/`)
 - [x] `TASK-P2-101`: Ingestion Pipeline & Relational Schema for 8 Core Hackathon Datasets

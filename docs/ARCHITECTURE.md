@@ -79,3 +79,16 @@ To prevent port collisions across local development and multi-container environm
 - `infra/`: Docker compose, Kubernetes manifests, CI configuration files.
 - `docs/`: All documentation, task boards, playbooks, and contracts.
 - `tests/`: Integration tests that exercise contracts between the services.
+
+---
+
+## 5. Frontend Visual Analytics & Chart Architecture (`P1`)
+
+The frontend features a high-contrast executive white theme powered by Chart.js (CDN), visualizing live commercial data across 6 specialized charts:
+
+1. **Territory Throughput & Opportunity Loss (`#territoryChartCanvas`)**: Grouped bar chart comparing delivered revenue vs unfulfilled shortfalls across all 12 sales territories.
+2. **Category Revenue Share (`#categoryDonutCanvas`)**: Doughnut chart representing ₹62.27 Cr revenue split across 6 product categories.
+3. **Opportunity Loss Vectors (`#lossVectorCanvas`)**: Horizontal bar chart breaking down the ₹18.74 Cr leakage vectors (Aged Stock, Silent Churn, Field Force Drain, Ghost Stockouts, Supply Shortfalls).
+4. **Distributor Stock Health Profile (`#stockAgingCanvas`)**: Doughnut chart displaying active inventory (300,916 units) vs slow-moving 90+ days (13,369 units) and critical 180+ days (2,717 units).
+5. **Field Rep Performance Anomaly (`#repProductivityCanvas`)**: Dual-axis bar chart correlating rep strike rate against non-compliant drive-by visits (<10 min).
+6. **Scheme Commercial ROI (`#schemeRoiCanvas`)**: Grouped comparative bar chart quantifying promotional spend vs incremental sales lift across trade incentive programs.

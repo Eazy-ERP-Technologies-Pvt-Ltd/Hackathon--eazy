@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="app-layout">
@@ -146,20 +147,61 @@
           </div>
         </div>
 
-        <!-- Visual Analytics Chart Section -->
-        <div class="analytics-chart-card">
-          <div class="chart-header">
-            <div>
-              <h3>Territory Order Throughput & Lost Sales Benchmark</h3>
-              <p class="chart-sub">Comparison of Delivered Volume vs Unfulfilled Shortfalls across all 12 Sales Territories</p>
+        <!-- Row 1: Interactive Analytics Charts (Territory & Category) -->
+        <div class="charts-row-dual wide-narrow">
+          <div class="chart-panel chart-wide">
+            <div class="chart-panel-header">
+              <div>
+                <h3>Territory Throughput & Opportunity Loss (₹ Lakhs)</h3>
+                <p class="chart-sub">Delivered revenue vs. unfulfilled order shortfalls across all 12 sales territories</p>
+              </div>
+              <span class="panel-tag">12 Sales Territories</span>
             </div>
-            <div class="chart-legend">
-              <span class="legend-item"><span class="legend-dot delivered"></span> Delivered Volume</span>
-              <span class="legend-item"><span class="legend-dot lost"></span> Lost Sales Shortfall</span>
+            <div class="chart-canvas-wrap">
+              <canvas id="territoryChartCanvas"></canvas>
             </div>
           </div>
-          <div class="chart-bars-wrap" id="territoryBarChart">
-            <!-- Injected by JS -->
+
+          <div class="chart-panel chart-narrow">
+            <div class="chart-panel-header">
+              <div>
+                <h3>Category Revenue Share</h3>
+                <p class="chart-sub">Distribution of ₹62.27 Cr billed volume</p>
+              </div>
+              <span class="panel-tag">6 Categories</span>
+            </div>
+            <div class="chart-canvas-wrap donut-wrap">
+              <canvas id="categoryDonutCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Secondary Charts (Loss Breakdown & Inventory Stock Aging) -->
+        <div class="charts-row-dual" style="margin-top: 24px;">
+          <div class="chart-panel">
+            <div class="chart-panel-header">
+              <div>
+                <h3>Opportunity Loss Breakdown by Vector</h3>
+                <p class="chart-sub">Quantified revenue-at-risk distribution across commercial leakages</p>
+              </div>
+              <span class="panel-tag" style="color:var(--accent-rose)">₹18.74 Cr Total</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="lossVectorCanvas"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-panel">
+            <div class="chart-panel-header">
+              <div>
+                <h3>Distributor Stock Aging & Health Profile</h3>
+                <p class="chart-sub">Active inventory vs slow-moving aged stock (317,002 units)</p>
+              </div>
+              <span class="panel-tag" style="color:var(--accent-emerald)">317,002 Units</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="stockAgingCanvas"></canvas>
+            </div>
           </div>
         </div>
 
@@ -335,6 +377,19 @@
           </div>
         </div>
 
+        <div class="chart-panel" style="margin-bottom: 24px;">
+          <div class="chart-panel-header">
+            <div>
+              <h3>Field Rep Performance: Strike Rate vs Non-Compliant Drive-Bys</h3>
+              <p class="chart-sub">Strike rate percentage (%) compared with flagged drive-by visits (<10 min) for field reps</p>
+            </div>
+            <span class="panel-tag">Productivity Audit</span>
+          </div>
+          <div class="chart-canvas-wrap" style="height: 300px;">
+            <canvas id="repProductivityCanvas"></canvas>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header">
             <h3>Field Sales Rep Productivity & Anomaly Roster</h3>
@@ -369,6 +424,19 @@
           <div>
             <h3>Trade Schemes & Margin Rebates Efficiency</h3>
             <p>Promotional spend vs. incremental sales lift across 11,903 retailer allocations.</p>
+          </div>
+        </div>
+
+        <div class="chart-panel" style="margin-bottom: 24px;">
+          <div class="chart-panel-header">
+            <div>
+              <h3>Scheme Commercial ROI: Spend vs Incremental Lift (₹ Lakhs)</h3>
+              <p class="chart-sub">Comparative return on investment across 6 active trade incentive programs</p>
+            </div>
+            <span class="panel-tag">Trade Budget Allocation</span>
+          </div>
+          <div class="chart-canvas-wrap" style="height: 300px;">
+            <canvas id="schemeRoiCanvas"></canvas>
           </div>
         </div>
 

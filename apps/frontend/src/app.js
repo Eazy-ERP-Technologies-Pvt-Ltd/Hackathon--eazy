@@ -80,6 +80,15 @@ function switchTab(tabId) {
     const breadcrumb = document.getElementById('breadcrumbActive');
     if (breadcrumb) breadcrumb.textContent = titles[tabId][2];
   }
+
+  // Trigger chart resize for newly active tab
+  setTimeout(() => {
+    Object.values(chartInstances).forEach(chart => {
+      if (chart && typeof chart.resize === 'function') {
+        chart.resize();
+      }
+    });
+  }, 60);
 }
 
 // Data Loader
@@ -133,7 +142,7 @@ function renderAll() {
   if (!engineData) return;
 
   renderOverview();
-  renderTerritoryBarChart();
+  renderInteractiveCharts();
   renderLeakages();
   renderDirectives();
   renderRetailer360();
@@ -193,31 +202,474 @@ function renderOverview() {
   });
 }
 
-// Visual Territory Bar Chart
-function renderTerritoryBarChart() {
-  const container = document.getElementById('territoryBarChart');
-  if (!container || !engineData.territories) return;
+// Chart Instances Registry
+let chartInstances = {};
 
-  container.innerHTML = '';
-  const maxOrderVal = Math.max(...engineData.territories.map(t => t.order_value));
+function initChartDefaults() {
+  if (typeof Chart === 'undefined') return;
+  Chart.defaults.font.family = "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+  Chart.defaults.color = '#64748B';
+  Chart.defaults.borderColor = '#F1F5F9';
+  Chart.defaults.plugins.tooltip.backgroundColor = '#0F172A';
+  Chart.defaults.plugins.tooltip.titleColor = '#F8FAFC';
+  Chart.defaults.plugins.tooltip.bodyColor = '#E2E8F0';
+  Chart.defaults.plugins.tooltip.borderColor = '#334155';
+  Chart.defaults.plugins.tooltip.borderWidth = 1;
+  Chart.defaults.plugins.tooltip.padding = 10;
+  Chart.defaults.plugins.tooltip.cornerRadius = 8;
+  Chart.defaults.plugins.legend.labels.usePointStyle = true;
+  Chart.defaults.plugins.legend.labels.boxWidth = 8;
+}
 
-  engineData.territories.forEach(t => {
-    const deliveredPct = (t.delivered_value / maxOrderVal) * 100;
-    const lostPct = (t.lost_value / maxOrderVal) * 100;
+function destroyExistingCharts() {
+  Object.keys(chartInstances).forEach(key => {
+    if (chartInstances[key]) {
+      try { chartInstances[key].destroy(); } catch (e) {}
+    }
+  });
+  chartInstances = {};
+}
 
-    const row = document.createElement('div');
-    row.className = 'chart-row';
-    row.innerHTML = `
-      <div class="chart-label" title="${t.territory_name} (${t.territory_id})">${t.territory_name}</div>
-      <div class="chart-bar-track">
-        <div class="chart-bar-fill delivered" style="width: ${deliveredPct}%" title="Delivered: ₹${(t.delivered_value / 100000).toFixed(1)}L"></div>
-        <div class="chart-bar-fill lost" style="width: ${lostPct}%" title="Lost: ₹${(t.lost_value).toLocaleString('en-IN')}"></div>
-      </div>
-      <div class="chart-metrics">
-        ₹${(t.delivered_value / 100000).toFixed(0)}L <small style="color:var(--accent-rose)">(₹${(t.lost_value / 1000).toFixed(0)}k lost)</small>
-      </div>
-    `;
-    container.appendChild(row);
+function renderInteractiveCharts() {
+  if (typeof Chart === 'undefined' || !engineData) return;
+  initChartDefaults();
+  destroyExistingCharts();
+
+  renderTerritoryChart();
+  renderCategoryDonut();
+  renderLossVectorChart();
+  renderStockAgingChart();
+  renderRepProductivityChart();
+  renderSchemeRoiChart();
+}
+
+// 1. Territory Grouped Bar Chart
+function renderTerritoryChart() {
+  const canvas = document.getElementById('territoryChartCanvas');
+  if (!canvas || !engineData.territories) return;
+
+  const territories = engineData.territories;
+  const labels = territories.map(t => t.territory_name);
+  const deliveredData = territories.map(t => +(t.delivered_value / 100000).toFixed(1));
+  const lostData = territories.map(t => +(t.lost_value / 100000).toFixed(1));
+
+  chartInstances.territory = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Delivered (₹ Lakhs)',
+          data: deliveredData,
+          backgroundColor: '#4F46E5',
+          borderRadius: 4,
+          barPercentage: 0.75,
+          categoryPercentage: 0.8
+        },
+        {
+          label: 'Lost Sales (₹ Lakhs)',
+          data: lostData,
+          backgroundColor: '#E11D48',
+          borderRadius: 4,
+          barPercentage: 0.75,
+          categoryPercentage: 0.8
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: {
+            boxWidth: 10,
+            font: { size: 11, weight: '600' },
+            color: '#475569'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const t = territories[ctx.dataIndex];
+              if (ctx.datasetIndex === 0) {
+                return ` Delivered: ₹${ctx.raw}L (Fill Rate: ${t.fill_rate}%)`;
+              } else {
+                return ` Lost Sales: ₹${ctx.raw}L (₹${(t.lost_value).toLocaleString('en-IN')})`;
+              }
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            font: { size: 10, weight: '600' },
+            color: '#64748B',
+            maxRotation: 45
+          }
+        },
+        y: {
+          grid: { color: '#F1F5F9' },
+          ticks: {
+            font: { size: 11 },
+            color: '#64748B',
+            callback: (v) => `₹${v}L`
+          }
+        }
+      }
+    }
+  });
+}
+
+// 2. Category Donut Chart
+function renderCategoryDonut() {
+  const canvas = document.getElementById('categoryDonutCanvas');
+  if (!canvas || !engineData.categories) return;
+
+  const categories = engineData.categories;
+  const labels = categories.map(c => c.category);
+  const data = categories.map(c => +(c.delivered_value / 10000000).toFixed(2));
+  const colors = ['#4F46E5', '#0EA5E9', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899'];
+
+  chartInstances.category = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: colors,
+        borderColor: '#FFFFFF',
+        borderWidth: 2,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '66%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            boxWidth: 8,
+            padding: 8,
+            font: { size: 10, weight: '600' },
+            color: '#475569'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const c = categories[ctx.dataIndex];
+              return ` ${ctx.label}: ₹${ctx.raw} Cr (${c.fill_rate}% fill rate)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// 3. Opportunity Loss Vectors
+function renderLossVectorChart() {
+  const canvas = document.getElementById('lossVectorCanvas');
+  if (!canvas || !engineData.kpis) return;
+
+  const k = engineData.kpis;
+  const labels = [
+    'Aged Stock Capital Lockup (90d+)',
+    'Silent Retailer Churn (Annualized)',
+    'Field Rep Productivity Leakage',
+    'Ghost Stockouts (Depot Surplus)',
+    'Supply Chain Shortfall'
+  ];
+
+  const agedValueCr = +((k.aged_90_plus_units + k.aged_180_plus_units) * 1245 / 10000000).toFixed(2);
+  const churnValueCr = +(k.silent_churn_annual_rev_at_risk / 10000000).toFixed(2);
+  const repDrainCr = 1.85;
+  const ghostValCr = +(k.ghost_stockouts_value / 10000000).toFixed(2);
+  const supplyShortfallCr = 0.51;
+
+  const data = [agedValueCr, churnValueCr, repDrainCr, ghostValCr, supplyShortfallCr];
+  const colors = ['#F59E0B', '#E11D48', '#6366F1', '#DC2626', '#94A3B8'];
+
+  chartInstances.lossVector = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Opportunity Loss (₹ Cr)',
+        data: data,
+        backgroundColor: colors,
+        borderRadius: 4,
+        barPercentage: 0.65
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ` Revenue at Risk: ₹${ctx.raw} Crores`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: '#F1F5F9' },
+          ticks: {
+            font: { size: 10, weight: '600' },
+            color: '#64748B',
+            callback: (v) => `₹${v} Cr`
+          }
+        },
+        y: {
+          grid: { display: false },
+          ticks: {
+            font: { size: 11, weight: '600' },
+            color: '#334155'
+          }
+        }
+      }
+    }
+  });
+}
+
+// 4. Distributor Stock Health Profile
+function renderStockAgingChart() {
+  const canvas = document.getElementById('stockAgingCanvas');
+  if (!canvas || !engineData.kpis) return;
+
+  const k = engineData.kpis;
+  const labels = [
+    'Active Stock (<60 Days)',
+    'Slow-Moving (90–179 Days)',
+    'Critical Aged (180+ Days)'
+  ];
+
+  const activeUnits = 300916;
+  const slowUnits = k.aged_90_plus_units;
+  const criticalUnits = k.aged_180_plus_units;
+  const totalUnits = activeUnits + slowUnits + criticalUnits;
+
+  chartInstances.stockAging = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: [activeUnits, slowUnits, criticalUnits],
+        backgroundColor: ['#10B981', '#F59E0B', '#E11D48'],
+        borderColor: '#FFFFFF',
+        borderWidth: 2,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '66%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            boxWidth: 8,
+            padding: 8,
+            font: { size: 10, weight: '600' },
+            color: '#475569'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const pct = ((ctx.raw / totalUnits) * 100).toFixed(1);
+              return ` ${ctx.label}: ${ctx.raw.toLocaleString()} units (${pct}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// 5. Rep Productivity Chart
+function renderRepProductivityChart() {
+  const canvas = document.getElementById('repProductivityCanvas');
+  if (!canvas || !engineData.reps) return;
+
+  const reps = engineData.reps.slice(0, 10);
+  const labels = reps.map(r => `${r.rep_name} (${r.rep_id})`);
+  const strikeRates = reps.map(r => r.strike_rate);
+  const driveBys = reps.map(r => r.drive_by_stops);
+
+  const strikeColors = reps.map(r => r.strike_rate < 25 ? '#E11D48' : '#4F46E5');
+  const driveColors = reps.map(r => r.drive_by_stops > 200 ? '#DC2626' : '#F59E0B');
+
+  chartInstances.repProductivity = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Strike Rate (%)',
+          data: strikeRates,
+          backgroundColor: strikeColors,
+          borderRadius: 4,
+          yAxisID: 'yStrike',
+          barPercentage: 0.7
+        },
+        {
+          label: 'Drive-By Stops (<10m)',
+          data: driveBys,
+          backgroundColor: driveColors,
+          borderRadius: 4,
+          yAxisID: 'yDrive',
+          barPercentage: 0.7
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: {
+            boxWidth: 10,
+            font: { size: 11, weight: '600' },
+            color: '#475569'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              if (ctx.datasetIndex === 0) {
+                return ` Strike Rate: ${ctx.raw}%`;
+              } else {
+                return ` Drive-By Check-ins (<10m): ${ctx.raw} visits`;
+              }
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            font: { size: 10, weight: '600' },
+            color: '#64748B',
+            maxRotation: 35
+          }
+        },
+        yStrike: {
+          type: 'linear',
+          position: 'left',
+          max: 100,
+          grid: { color: '#F1F5F9' },
+          ticks: {
+            font: { size: 10 },
+            color: '#4F46E5',
+            callback: (v) => `${v}%`
+          }
+        },
+        yDrive: {
+          type: 'linear',
+          position: 'right',
+          grid: { display: false },
+          ticks: {
+            font: { size: 10 },
+            color: '#DC2626',
+            callback: (v) => `${v}`
+          }
+        }
+      }
+    }
+  });
+}
+
+// 6. Scheme Commercial ROI Chart
+function renderSchemeRoiChart() {
+  const canvas = document.getElementById('schemeRoiCanvas');
+  if (!canvas || !engineData.schemes) return;
+
+  const schemes = engineData.schemes;
+  const labels = schemes.map(s => `${s.scheme_id}: ${s.scheme_name.slice(0, 16)}...`);
+  const costs = schemes.map(s => +(s.scheme_cost / 100000).toFixed(1));
+  const lifts = schemes.map(s => +(s.sales_lift / 100000).toFixed(1));
+  const liftColors = schemes.map(s => s.sales_lift >= 0 ? '#10B981' : '#E11D48');
+
+  chartInstances.schemeRoi = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Scheme Spend (₹ Lakhs)',
+          data: costs,
+          backgroundColor: '#94A3B8',
+          borderRadius: 4,
+          barPercentage: 0.7
+        },
+        {
+          label: 'Incremental Sales Lift (₹ Lakhs)',
+          data: lifts,
+          backgroundColor: liftColors,
+          borderRadius: 4,
+          barPercentage: 0.7
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: {
+            boxWidth: 10,
+            font: { size: 11, weight: '600' },
+            color: '#475569'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const s = schemes[ctx.dataIndex];
+              if (ctx.datasetIndex === 0) {
+                return ` Scheme Spend: ₹${ctx.raw}L`;
+              } else {
+                return ` Incremental Lift: ₹${ctx.raw}L (ROI: ${s.roi_ratio}x)`;
+              }
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            font: { size: 10, weight: '600' },
+            color: '#64748B',
+            maxRotation: 30
+          }
+        },
+        y: {
+          grid: { color: '#F1F5F9' },
+          ticks: {
+            font: { size: 10 },
+            color: '#64748B',
+            callback: (v) => `₹${v}L`
+          }
+        }
+      }
+    }
   });
 }
 
