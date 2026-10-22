@@ -3,7 +3,7 @@ import { AIInferenceRequest, AIInferenceResponse } from '../../../packages/share
 
 export async function proxyAIInference(
   request: AIInferenceRequest,
-  aiServiceUrl = 'http://localhost:5000/infer'
+  aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:5050/infer'
 ): Promise<ApiResponse<AIInferenceResponse>> {
   try {
     const response = await fetch(aiServiceUrl, {

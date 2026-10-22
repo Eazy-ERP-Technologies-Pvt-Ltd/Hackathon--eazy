@@ -2,7 +2,7 @@ import http from 'http';
 import { executeAgentReasoning } from './agent';
 import { AIInferenceRequest } from '../../../packages/shared/contracts/ai';
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 5050;
 
 const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

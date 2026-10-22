@@ -1,0 +1,21 @@
+{
+  "name": "eazygrowth-hackathon",
+  "version": "1.0.0",
+  "description": "Opportunity Loss & Prescriptive Growth Engine for Consumer Goods Distribution",
+  "private": true,
+  "scripts": {
+    "start": "bash ./scripts/run-all.sh",
+    "dev": "bash ./scripts/run-all.sh",
+    "ingest": "python3 ./scripts/build_engine_data.py",
+    "verify": "bash ./scripts/verify-setup.sh"
+  },
+  "keywords": [
+    "hackathon",
+    "opportunity-loss",
+    "distribution",
+    "prescriptive-ai",
+    "sales-force-automation"
+  ],
+  "author": "Bhanu Rathore",
+  "license": "MIT"
+}
