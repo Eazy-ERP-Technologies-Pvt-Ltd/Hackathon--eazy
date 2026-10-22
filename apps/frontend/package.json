@@ -1,0 +1,17 @@
+{
+  "name": "@workspace/frontend",
+  "version": "1.0.0",
+  "description": "Frontend Web Application (Role P1: Frontend Lead)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@workspace/shared": "1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "typescript": "^5.0.0"
+  }
+}

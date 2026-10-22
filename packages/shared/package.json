@@ -1,0 +1,12 @@
+{
+  "name": "@workspace/shared",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types, DTO contracts, and schemas for 5-person collaboration",
+  "main": "contracts/index.ts",
+  "types": "contracts/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "Hackathon Team",
+  "license": "MIT"
+}

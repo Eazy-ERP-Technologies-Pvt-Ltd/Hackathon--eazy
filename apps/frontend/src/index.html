@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hackathon Collaboration Hub — 5-Person AI Workspace</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-badge">5X</span>
+        <h2>TeamHub</h2>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#overview" class="nav-item active">📊 Overview</a>
+        <a href="#roles" class="nav-item">👥 Team Roles</a>
+        <a href="#contracts" class="nav-item">📜 Contracts</a>
+        <a href="#terminal" class="nav-item">🤖 AI Terminal</a>
+      </nav>
+
+      <div class="active-role-card">
+        <div class="role-tag">ACTIVE PERSONA</div>
+        <div class="role-title" id="activeRoleDisplay">P1: Frontend Lead</div>
+        <div class="role-scope" id="activeScopeDisplay">apps/frontend/</div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1>Collaboration Workspace</h1>
+          <p class="subtitle">Docs-as-Code & Multi-Agent Orchestration System</p>
+        </div>
+        <div class="topbar-right">
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span>All Services In Sync</span>
+          </div>
+          <button id="verifyBtn" class="btn btn-secondary">Run Verification</button>
+        </div>
+      </header>
+
+      <!-- Roles Status Grid -->
+      <section class="section" id="roles">
+        <h3 class="section-title">5-Person Engineering Matrix</h3>
+        <div class="roles-grid">
+          <div class="role-card" data-role="p1">
+            <div class="role-card-header">
+              <span class="badge badge-p1">P1</span>
+              <h4>Frontend Lead</h4>
+            </div>
+            <p>Web Client, Design System, Responsive Layouts</p>
+            <div class="role-boundary"><code>apps/frontend/</code></div>
+            <div class="role-status">Online • 3000</div>
+          </div>
+
+          <div class="role-card" data-role="p2">
+            <div class="role-card-header">
+              <span class="badge badge-p2">P2</span>
+              <h4>Backend Lead</h4>
+            </div>
+            <p>API Routing, Data Persistence, Middleware</p>
+            <div class="role-boundary"><code>apps/backend/</code></div>
+            <div class="role-status">Online • 8000</div>
+          </div>
+
+          <div class="role-card" data-role="p3">
+            <div class="role-card-header">
+              <span class="badge badge-p3">P3</span>
+              <h4>AI Engineer</h4>
+            </div>
+            <p>LLM Pipelines, Vector Search, Tool Calling</p>
+            <div class="role-boundary"><code>apps/ai-service/</code></div>
+            <div class="role-status">Online • 5000</div>
+          </div>
+
+          <div class="role-card" data-role="p4">
+            <div class="role-card-header">
+              <span class="badge badge-p4">P4</span>
+              <h4>Infra & Shared</h4>
+            </div>
+            <p>Contract Schemas, Docker Orchestration, CI/CD</p>
+            <div class="role-boundary"><code>packages/shared/</code></div>
+            <div class="role-status">Stable</div>
+          </div>
+
+          <div class="role-card" data-role="p5">
+            <div class="role-card-header">
+              <span class="badge badge-p5">P5</span>
+              <h4>Product & QA</h4>
+            </div>
+            <p>Sprint Backlog, Contract Verification, E2E</p>
+            <div class="role-boundary"><code>docs/tasks/</code></div>
+            <div class="role-status">Verified</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Prompt Sandbox & Streaming Output -->
+      <section class="section" id="terminal">
+        <h3 class="section-title">Contract-Compliant AI Terminal</h3>
+        <div class="terminal-panel">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">agent@hackathon: ~ / docs-coded protocol</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-log" id="terminalOutput">
+              <div class="log-line system">[SYSTEM] AGENTS.md loaded successfully.</div>
+              <div class="log-line system">[SYSTEM] Contracts validated: ApiResponse, AIInferenceRequest, UserProfile.</div>
+              <div class="log-line info">[INFO] Ready for multi-agent dispatch across P1, P2, P3, P4, P5.</div>
+            </div>
+            <div class="terminal-input-row">
+              <span class="prompt-symbol">&gt;</span>
+              <input type="text" id="agentInput" placeholder="Type prompt (e.g., @role:backend implement healthcheck) or test inference..." />
+              <button id="sendBtn" class="btn btn-primary">Dispatch</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
