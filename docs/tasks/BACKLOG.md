@@ -33,6 +33,10 @@
   - **Inputs:** `packages/shared/contracts/growth-engine.ts`
   - **Outputs:** `apps/frontend/src/features/field/BeatSheet.js`, WhatsApp dispatch modal in `apps/frontend/src/app.js`
   - **Validation:** Renders prioritized outlet visit cards with SKU pitch quantities and working WhatsApp push modal.
+- [x] `TASK-P1-103`: Interactive Chart.js Visual Suite & Executive White Theme
+  - **Inputs:** Chart.js CDN, `engineData` telemetry across territories, categories, leakages, inventory, reps, and schemes.
+  - **Outputs:** `apps/frontend/src/index.html`, `apps/frontend/src/styles.css`, `apps/frontend/src/app.js`
+  - **Validation:** 6 interactive responsive charts: Territory Grouped Bars, Category Revenue Doughnut, Opportunity Loss Vectors, Stock Health Profile, Rep Strike Rate vs Drive-Bys, and Scheme Commercial ROI. Full executive white theme with high-contrast palette and tab-switch auto-resizing.
 
 ### P2: Backend Team (`apps/backend/`)
 - [x] `TASK-P2-101`: Ingestion Pipeline & Relational Schema for 8 Core Hackathon Datasets
@@ -68,7 +72,7 @@
 - [x] `TASK-P5-101`: Leakage Detection Accuracy & Revenue Calculation Verification
   - **Inputs:** 17,479 sales orders and distributor inventory records
   - **Outputs:** Verified calculation: ₹51.66L Ghost Stockouts (542 lines), ₹17.20Cr Silent Churn (1,381 stores).
-- [ ] `TASK-P5-102`: A/B Testing Measurement Framework
-  - **Inputs:** Control vs Treatment route protocol
-  - **Outputs:** `docs/specs/AB_TESTING_FRAMEWORK.md`
-  - **Validation:** Statistical formula for Throughput per Productive Call lift over 60 days.
+- [x] `TASK-P5-102`: A/B Testing Measurement Framework & Interactive Simulator
+  - **Inputs:** Control vs Treatment territory design across 12 sales territories
+  - **Outputs:** `docs/specs/AB_TESTING_FRAMEWORK.md`, interactive `#pane-measurement` tab in `apps/frontend/src/index.html`
+  - **Validation:** Difference-in-Differences (DiD) econometric specification, interactive 4-lever topline lift simulator, and 30-60-90 day execution roadmap.

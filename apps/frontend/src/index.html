@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="./styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="app-layout">
@@ -17,13 +18,13 @@
         <div class="brand-icon">⚡</div>
         <div class="brand-text">
           <h2>EazyGrowth</h2>
-          <span class="brand-tag">Prescriptive AI</span>
+          <span class="brand-tag">Prescriptive AI Engine</span>
         </div>
       </div>
 
       <div class="data-badge">
         <div class="pulse-dot"></div>
-        <span>Live Hackathon Data</span>
+        <span>Oct 2025 – Sep 2026 Live Audit</span>
       </div>
 
       <nav class="nav-links">
@@ -36,6 +37,9 @@
         <button class="nav-item" data-tab="directives">
           <span class="icon">📱</span> Morning Beat Directives <span class="badge badge-accent">15</span>
         </button>
+        <button class="nav-item" data-tab="retailer360">
+          <span class="icon">🏪</span> Retailer 360° Explorer
+        </button>
         <button class="nav-item" data-tab="reps">
           <span class="icon">🏃</span> Field Force Health
         </button>
@@ -45,17 +49,20 @@
         <button class="nav-item" data-tab="copilot">
           <span class="icon">🤖</span> Strategy Copilot
         </button>
+        <button class="nav-item" data-tab="measurement">
+          <span class="icon">📈</span> Impact & Measurement
+        </button>
       </nav>
 
       <div class="sidebar-footer">
         <div class="service-status">
           <div class="status-row">
             <span class="dot-online"></span>
-            <span>Core API (Port 8000)</span>
+            <span>Core API: <code>:8000</code></span>
           </div>
           <div class="status-row">
             <span class="dot-online"></span>
-            <span>AI Service (Port 5050)</span>
+            <span>AI Service: <code>:5050</code></span>
           </div>
         </div>
         <div class="data-sync-meta">
@@ -69,8 +76,11 @@
       <!-- Topbar Header -->
       <header class="topbar">
         <div class="topbar-left">
+          <div class="breadcrumbs">
+            <span>Enterprise Intelligence</span> &rsaquo; <span id="breadcrumbActive">Executive Cockpit</span>
+          </div>
           <h1 id="tabHeaderTitle">Executive Growth Leakage Cockpit</h1>
-          <p class="subtitle" id="tabHeaderSubtitle">Multi-tier distribution analysis: Oct 2025 – Sep 2026 (Amounts in ₹ INR)</p>
+          <p class="subtitle" id="tabHeaderSubtitle">Multi-tier distribution telemetry across 12 territories & 6 product categories</p>
         </div>
         <div class="topbar-right">
           <div class="kpi-pill">
@@ -78,7 +88,7 @@
             <span class="pill-val">₹62.27 Cr</span>
           </div>
           <div class="kpi-pill alert">
-            <span class="pill-label">Total Leakage Identified</span>
+            <span class="pill-label">Identified Leakage</span>
             <span class="pill-val" id="topbarLeakVal">₹18.74 Cr</span>
           </div>
           <button id="refreshDataBtn" class="btn btn-secondary">
@@ -89,53 +99,170 @@
 
       <!-- TAB 1: EXECUTIVE COCKPIT -->
       <div class="tab-pane active" id="pane-overview">
+        <!-- Executive Storyline & Plain English Playbook -->
+        <div class="storyline-card">
+          <div class="storyline-header">
+            <div class="storyline-badge">EXECUTIVE SUMMARY • 2-MINUTE STORY</div>
+            <h3>How The Business Is Hemorrhaging ₹18.74 Cr & How To Reclaim It</h3>
+            <p>Every metric in this dashboard answers four simple questions: <strong>Where is money leaking?</strong>, <strong>Why does it matter?</strong>, <strong>What should management do next?</strong>, and <strong>How is success measured?</strong></p>
+          </div>
+
+          <div class="storyline-grid">
+            <div class="storyline-tile tile-ghost">
+              <div class="tile-icon">📦</div>
+              <div class="tile-title">1. The "Ghost" Stockout</div>
+              <div class="tile-tagline">"Telling customers 'No' while the warehouse is full"</div>
+              <div class="tile-body">
+                <div class="tile-row"><strong>What happened:</strong> 542 orders unfulfilled, but distributor inventory shows 100% stock was sitting on hand.</div>
+                <div class="tile-row"><strong>Why it matters:</strong> <strong>₹51.66 Lakhs</strong> in instant sales lost simply because sales reps cannot see distributor stock in real-time.</div>
+                <div class="tile-row"><strong>What to do next:</strong> Auto-route orders directly to distributor dispatch queues instead of manual confirmations.</div>
+                <div class="tile-row"><strong>How to measure:</strong> Zero unfulfilled orders when <code>Available Qty &gt; 0</code>; <strong>100% Ghost Stockout Elimination</strong> in 30 days.</div>
+              </div>
+            </div>
+
+            <div class="storyline-tile tile-churn">
+              <div class="tile-icon">🏪</div>
+              <div class="tile-title">2. The "Silent" Churn</div>
+              <div class="tile-tagline">"1,381 stores stopped buying, but no alarm bells rang"</div>
+              <div class="tile-body">
+                <div class="tile-row"><strong>What happened:</strong> 46% of all retailers are still marked "Active" in CRM, but have placed 0 orders in &gt;60 days.</div>
+                <div class="tile-row"><strong>Why it matters:</strong> <strong>₹17.20 Crores</strong> annual volume at risk. Stores don't complain—they silently switch to competitors.</div>
+                <div class="tile-row"><strong>What to do next:</strong> Trigger automated WhatsApp re-engagement directives with high-lift LED/Geyser schemes at Day 21 of inactivity.</div>
+                <div class="tile-row"><strong>How to measure:</strong> Reactivate 200 Tier A/B accounts within 14 days; recover <strong>+₹1.43 Cr/month</strong> run rate.</div>
+              </div>
+            </div>
+
+            <div class="storyline-tile tile-rep">
+              <div class="tile-icon">🏃</div>
+              <div class="tile-title">3. The "Drive-By" Reps</div>
+              <div class="tile-tagline">"Reps logging fake visits to hit activity quotas"</div>
+              <div class="tile-body">
+                <div class="tile-row"><strong>What happened:</strong> 3 reps (SP005, SP017, SP023) logged 4,623 visits, but 962 lasted &lt;10 mins and 1,414 lacked GPS proof. Strike rate was only 16.5% (vs 59% avg).</div>
+                <div class="tile-row"><strong>Why it matters:</strong> Sales reps are our most expensive growth asset. Wasted visits cost ₹1.85 Cr and leave good retailers unserviced.</div>
+                <div class="tile-row"><strong>What to do next:</strong> Prune non-productive stops into bi-weekly tele-sales; enforce mandatory 15-minute geofenced check-ins.</div>
+                <div class="tile-row"><strong>How to measure:</strong> Lift field strike rate from <strong>16.5% to 45%+</strong>; cut drive-by visits by 80%.</div>
+              </div>
+            </div>
+
+            <div class="storyline-tile tile-capital">
+              <div class="tile-icon">💰</div>
+              <div class="tile-title">4. Dead Stock vs Starving Stores</div>
+              <div class="tile-tagline">"Working capital locked up in slow-moving dust"</div>
+              <div class="tile-body">
+                <div class="tile-row"><strong>What happened:</strong> 16,086 units (₹20.02 Cr value) are aged 90 to 180+ days in distributor depots while high-demand stores face order cuts.</div>
+                <div class="tile-row"><strong>Why it matters:</strong> Depreciating stock ties up distributor cash credit, preventing them from buying fast-moving SKUs.</div>
+                <div class="tile-row"><strong>What to do next:</strong> Reallocate aged inventory across territories using targeted trade rebate schemes (e.g., SCH02) before obsolescence.</div>
+                <div class="tile-row"><strong>How to measure:</strong> Liquidate <strong>35% of 90d+ aged stock</strong> within 45 days, freeing ₹7 Cr in working capital.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Hero Metrics Grid -->
         <div class="metrics-grid">
           <div class="metric-card card-gradient-rose">
             <div class="metric-header">
               <span class="metric-label">Ghost Stockouts (Depot Surplus)</span>
-              <span class="badge badge-danger">High Severity</span>
+              <span class="badge badge-danger">CRITICAL</span>
             </div>
             <div class="metric-value" id="kpiGhostVal">₹51.66 Lakhs</div>
-            <div class="metric-desc">542 orders cut while distributor had sufficient stock on hand</div>
+            <div class="metric-desc">542 orders unfulfilled despite distributor holding available stock on hand</div>
             <div class="metric-footer">
-              <span class="metric-trend negative">50.5% of all unfulfilled lines</span>
+              <span class="metric-trend negative">⚠️ 50.5% of total unfulfilled lines</span>
             </div>
           </div>
 
           <div class="metric-card card-gradient-amber">
             <div class="metric-header">
               <span class="metric-label">Silent Churn Risk</span>
-              <span class="badge badge-warning">High Risk</span>
+              <span class="badge badge-warning">HIGH RISK</span>
             </div>
             <div class="metric-value" id="kpiChurnVal">₹17.20 Cr</div>
             <div class="metric-desc">1,381 "Active" stores with 0 orders in &gt;60 days</div>
             <div class="metric-footer">
-              <span class="metric-trend neutral">₹1.43 Cr / month run-rate at risk</span>
+              <span class="metric-trend neutral">📉 ₹1.43 Cr / mo historical run rate</span>
             </div>
           </div>
 
           <div class="metric-card card-gradient-indigo">
             <div class="metric-header">
-              <span class="metric-label">Field Force Productivity Leak</span>
-              <span class="badge badge-info">3 Reps Flagged</span>
+              <span class="metric-label">Field Force Productivity Drain</span>
+              <span class="badge badge-info">3 REPS FLAGGED</span>
             </div>
             <div class="metric-value">4,623 Visits</div>
             <div class="metric-desc">Reps SP005, SP017, SP023: 16.5% strike rate vs 59% avg</div>
             <div class="metric-footer">
-              <span class="metric-trend negative">962 "drive-by" stops &lt;10 mins</span>
+              <span class="metric-trend negative">⏱️ 962 "drive-by" stops &lt;10 mins</span>
             </div>
           </div>
 
           <div class="metric-card card-gradient-emerald">
             <div class="metric-header">
               <span class="metric-label">Aged Stock Capital Lockup</span>
-              <span class="badge badge-success">Reallocation Lever</span>
+              <span class="badge badge-success">REALLOCATION LEVER</span>
             </div>
             <div class="metric-value" id="kpiAgedVal">16,086 Units</div>
             <div class="metric-desc">13,369 units aged 90+ days • 2,717 units aged 180+ days</div>
             <div class="metric-footer">
-              <span class="metric-trend positive">Total inventory: ₹20.02 Cr</span>
+              <span class="metric-trend positive">📦 ₹20.02 Cr inventory buffer</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 1: Interactive Analytics Charts (Territory & Category) -->
+        <div class="charts-row-dual wide-narrow">
+          <div class="chart-panel chart-wide">
+            <div class="chart-panel-header">
+              <div>
+                <h3>Territory Throughput & Opportunity Loss (₹ Lakhs)</h3>
+                <p class="chart-sub">Delivered revenue vs. unfulfilled order shortfalls across all 12 sales territories</p>
+              </div>
+              <span class="panel-tag">12 Sales Territories</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="territoryChartCanvas"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-panel chart-narrow">
+            <div class="chart-panel-header">
+              <div>
+                <h3>Category Revenue Share</h3>
+                <p class="chart-sub">Distribution of ₹62.27 Cr billed volume</p>
+              </div>
+              <span class="panel-tag">6 Categories</span>
+            </div>
+            <div class="chart-canvas-wrap donut-wrap">
+              <canvas id="categoryDonutCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Secondary Charts (Loss Breakdown & Inventory Stock Aging) -->
+        <div class="charts-row-dual" style="margin-top: 24px;">
+          <div class="chart-panel">
+            <div class="chart-panel-header">
+              <div>
+                <h3>Opportunity Loss Breakdown by Vector</h3>
+                <p class="chart-sub">Quantified revenue-at-risk distribution across commercial leakages</p>
+              </div>
+              <span class="panel-tag" style="color:var(--accent-rose)">₹18.74 Cr Total</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="lossVectorCanvas"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-panel">
+            <div class="chart-panel-header">
+              <div>
+                <h3>Distributor Stock Aging & Health Profile</h3>
+                <p class="chart-sub">Active inventory vs slow-moving aged stock (317,002 units)</p>
+              </div>
+              <span class="panel-tag" style="color:var(--accent-emerald)">317,002 Units</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="stockAgingCanvas"></canvas>
             </div>
           </div>
         </div>
@@ -144,7 +271,7 @@
         <div class="dashboard-grid">
           <div class="panel">
             <div class="panel-header">
-              <h3>Territory Performance & Unfulfilled Orders</h3>
+              <h3>Territory Performance Roster</h3>
               <span class="panel-tag">12 Sales Territories</span>
             </div>
             <div class="table-container">
@@ -190,9 +317,9 @@
 
         <!-- The Strategic Mandate Box -->
         <div class="mandate-card">
-          <div class="mandate-badge">THE STRATEGIC MANDATE</div>
+          <div class="mandate-badge">PRESCRIPTIVE MANAGEMENT MANDATE</div>
           <div class="mandate-content">
-            <h4>How To Unlock +8% to +12% Topline Lift in 60 Days</h4>
+            <h4>How To Capture +8% to +12% Topline Lift in 60 Days</h4>
             <div class="mandate-steps">
               <div class="mandate-step">
                 <span class="step-num">1</span>
@@ -242,6 +369,9 @@
               <option value="HIGH">High</option>
             </select>
           </div>
+          <div class="filter-summary">
+            Showing <strong id="filterMatchCount">0</strong> opportunities
+          </div>
         </div>
 
         <div class="leakages-stream" id="leakagesContainer">
@@ -256,9 +386,11 @@
             <h3>08:30 AM Daily Morning Beat Directives</h3>
             <p>Algorithmic micro-instructions dispatched to field reps and supervisors via WhatsApp API.</p>
           </div>
-          <button class="btn btn-primary" id="dispatchAllBtn">
-            <span>📲</span> Batch Dispatch All (15 Directives)
-          </button>
+          <div class="intro-actions">
+            <button class="btn btn-primary" id="dispatchAllBtn">
+              <span>📲</span> Batch Dispatch All (15 Directives)
+            </button>
+          </div>
         </div>
 
         <div class="directives-grid" id="directivesContainer">
@@ -266,7 +398,27 @@
         </div>
       </div>
 
-      <!-- TAB 4: FIELD FORCE HEALTH -->
+      <!-- TAB 4: RETAILER 360 EXPLORER -->
+      <div class="tab-pane" id="pane-retailer360">
+        <div class="retailer-search-bar">
+          <div class="search-box large">
+            <span class="search-icon">🏪</span>
+            <input type="text" id="retailerSearchInput" placeholder="Search 3,000 retailers (e.g., Royal Home Needs, Modern Hardware, Gupta)..." />
+          </div>
+          <div class="tier-pills">
+            <button class="pill-btn active" data-tier="ALL">All Tiers (3,000)</button>
+            <button class="pill-btn" data-tier="A">Tier A (455)</button>
+            <button class="pill-btn" data-tier="B">Tier B (1,052)</button>
+            <button class="pill-btn" data-tier="C">Tier C (1,493)</button>
+          </div>
+        </div>
+
+        <div class="retailer-grid" id="retailerGridContainer">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- TAB 5: FIELD FORCE HEALTH -->
       <div class="tab-pane" id="pane-reps">
         <div class="reps-summary-banner">
           <div class="banner-stat">
@@ -284,6 +436,19 @@
           <div class="banner-stat warning">
             <div class="num">2,374</div>
             <div class="lbl">Non-GPS Verified (13.0%)</div>
+          </div>
+        </div>
+
+        <div class="chart-panel" style="margin-bottom: 24px;">
+          <div class="chart-panel-header">
+            <div>
+              <h3>Field Rep Performance: Strike Rate vs Non-Compliant Drive-Bys</h3>
+              <p class="chart-sub">Strike rate percentage (%) compared with flagged drive-by visits (<10 min) for field reps</p>
+            </div>
+            <span class="panel-tag">Productivity Audit</span>
+          </div>
+          <div class="chart-canvas-wrap" style="height: 300px;">
+            <canvas id="repProductivityCanvas"></canvas>
           </div>
         </div>
 
@@ -315,12 +480,25 @@
         </div>
       </div>
 
-      <!-- TAB 5: SCHEMES & PROMOTIONS -->
+      <!-- TAB 6: SCHEMES & PROMOTIONS -->
       <div class="tab-pane" id="pane-schemes">
         <div class="section-intro">
           <div>
             <h3>Trade Schemes & Margin Rebates Efficiency</h3>
-            <p>Comparison of scheme promotional costs vs. true category sales lift across 11,903 retailer allocations.</p>
+            <p>Promotional spend vs. incremental sales lift across 11,903 retailer allocations.</p>
+          </div>
+        </div>
+
+        <div class="chart-panel" style="margin-bottom: 24px;">
+          <div class="chart-panel-header">
+            <div>
+              <h3>Scheme Commercial ROI: Spend vs Incremental Lift (₹ Lakhs)</h3>
+              <p class="chart-sub">Comparative return on investment across 6 active trade incentive programs</p>
+            </div>
+            <span class="panel-tag">Trade Budget Allocation</span>
+          </div>
+          <div class="chart-canvas-wrap" style="height: 300px;">
+            <canvas id="schemeRoiCanvas"></canvas>
           </div>
         </div>
 
@@ -329,7 +507,7 @@
         </div>
       </div>
 
-      <!-- TAB 6: STRATEGY COPILOT (AI TERMINAL) -->
+      <!-- TAB 7: STRATEGY COPILOT -->
       <div class="tab-pane" id="pane-copilot">
         <div class="copilot-container">
           <div class="terminal-panel">
@@ -344,7 +522,7 @@
                 <div class="log-line system">[SYSTEM] Engine Knowledge Graph loaded: 17,479 orders, 3,000 retailers, 60 SKUs.</div>
                 <div class="log-line info">[INSIGHT] ₹51.66L in Ghost Stockouts detected across 542 orders where distributor warehouse had surplus stock.</div>
                 <div class="log-line info">[INSIGHT] 1,381 active retailers are silently churning (no orders &gt;60 days). Annual volume at risk: ₹17.20 Cr.</div>
-                <div class="log-line prompt-tip">Try asking: "Why is rep SP005 underperforming?", "How do we recover Modern Hardware?", or "Which schemes should we stop?"</div>
+                <div class="log-line prompt-tip">💡 Try asking: "Why is rep SP005 underperforming?", "How do we recover Modern Hardware?", or "Which schemes should we stop?"</div>
               </div>
               <div class="terminal-input-row">
                 <span class="prompt-symbol">&gt;</span>
@@ -355,7 +533,7 @@
           </div>
 
           <div class="quick-prompts">
-            <span class="quick-label">Quick Prompts:</span>
+            <span class="quick-label">Strategic Prompts:</span>
             <button class="quick-chip" data-q="Explain the root cause of the Ghost Stockouts in Kolkata and Mumbai.">Ghost Stockouts Root Cause</button>
             <button class="quick-chip" data-q="What is the 30-day win-back strategy for the 1,381 silently churned retailers?">Silent Churn Win-Back Plan</button>
             <button class="quick-chip" data-q="Audit rep SP005, SP017, and SP023 and give me field compliance directives.">Rep Beat Compliance Audit</button>
@@ -363,30 +541,223 @@
           </div>
         </div>
       </div>
+
+      <!-- TAB 8: IMPACT & MEASUREMENT FRAMEWORK -->
+      <div class="tab-pane" id="pane-measurement">
+        <!-- Section Intro -->
+        <div class="section-intro">
+          <div>
+            <h3>Prescriptive Action & Impact Measurement Framework</h3>
+            <p>Interactive Topline Lift Simulator, 60-Day Difference-in-Differences (DiD) A/B Testing Protocol, and Phased Execution Roadmap.</p>
+          </div>
+          <div class="intro-actions">
+            <button class="btn btn-secondary" onclick="window.print()">
+              <span>🖨️</span> Print Executive Action Sheet
+            </button>
+          </div>
+        </div>
+
+        <!-- Topline Lift Interactive Simulator -->
+        <div class="simulator-card">
+          <div class="simulator-header">
+            <div>
+              <span class="sim-badge">EXECUTIVE ROI CALCULATOR</span>
+              <h4>Interactive Growth Lift & Working Capital Simulator</h4>
+              <p>Adjust execution levers to model 60-day financial recovery across the 4 leakage vectors.</p>
+            </div>
+            <div class="sim-total-box">
+              <span class="sim-total-lbl">Projected Annual Topline Lift</span>
+              <div class="sim-total-num" id="simTotalRev">₹5.09 Cr</div>
+              <span class="sim-total-sub" id="simPctLift">+8.2% Baseline Revenue Lift</span>
+            </div>
+          </div>
+
+          <div class="sim-controls-grid">
+            <div class="sim-control-item">
+              <div class="sim-control-header">
+                <label for="sliderGhost">1. Ghost Stockout Auto-Fulfillment</label>
+                <span class="sim-val" id="valGhost">85%</span>
+              </div>
+              <input type="range" id="sliderGhost" min="0" max="100" value="85" step="5" />
+              <div class="sim-impact-tag">
+                Recovered: <strong id="recGhost">₹43.91 Lakhs</strong> (of ₹51.66L)
+              </div>
+            </div>
+
+            <div class="sim-control-item">
+              <div class="sim-control-header">
+                <label for="sliderChurn">2. Silent Churn Win-Back Rate</label>
+                <span class="sim-val" id="valChurn">20%</span>
+              </div>
+              <input type="range" id="sliderChurn" min="0" max="50" value="20" step="5" />
+              <div class="sim-impact-tag">
+                Recovered: <strong id="recChurn">₹3.44 Cr</strong> (276 stores reactivated)
+              </div>
+            </div>
+
+            <div class="sim-control-item">
+              <div class="sim-control-header">
+                <label for="sliderRep">3. Field Rep Strike Rate Improvement</label>
+                <span class="sim-val" id="valRep">40%</span>
+              </div>
+              <input type="range" id="sliderRep" min="16" max="60" value="40" step="2" />
+              <div class="sim-impact-tag">
+                Recovered: <strong id="recRep">₹1.21 Cr</strong> (from bottom 3 reps)
+              </div>
+            </div>
+
+            <div class="sim-control-item">
+              <div class="sim-control-header">
+                <label for="sliderStock">4. Aged Inventory Liquidation (90d+)</label>
+                <span class="sim-val" id="valStock">30%</span>
+              </div>
+              <input type="range" id="sliderStock" min="0" max="60" value="30" step="5" />
+              <div class="sim-impact-tag">
+                Cash Unlocked: <strong id="recStock">₹6.01 Cr</strong> (4,826 units)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- A/B Testing Protocol Section -->
+        <div class="panel" style="margin-top: 24px;">
+          <div class="panel-header">
+            <div>
+              <h3>60-Day Scientific A/B Testing Measurement Protocol</h3>
+              <p class="chart-sub">Quasi-experimental Difference-in-Differences (DiD) validation across 12 sales territories</p>
+            </div>
+            <span class="panel-tag">Statistical Rigor (p &lt; 0.05)</span>
+          </div>
+
+          <div class="ab-test-grid">
+            <div class="ab-col treatment">
+              <div class="ab-col-header">
+                <span class="ab-badge badge-treatment">TREATMENT GROUP (6 Territories)</span>
+                <h4>Algorithmic Prescriptive Engine Active</h4>
+                <p>Mumbai, Kolkata, Delhi, Bangalore, Lucknow, Jaipur</p>
+              </div>
+              <ul class="ab-features">
+                <li><span>✓</span> <strong>Real-time Ghost Stockout Auto-Lock:</strong> Direct dispatch queue without phone delays.</li>
+                <li><span>✓</span> <strong>08:30 AM Morning Beat WhatsApp Directives:</strong> Algorithmic push with custom SKU pitches.</li>
+                <li><span>✓</span> <strong>Day 21 Silent Churn Triggers:</strong> Targeted ASM win-back with SCH02/SCH03 bundle rebates.</li>
+                <li><span>✓</span> <strong>Geofenced Beat Pruning:</strong> Mandatory 15-min check-in; bottom stops converted to phone calls.</li>
+              </ul>
+            </div>
+
+            <div class="ab-col control">
+              <div class="ab-col-header">
+                <span class="ab-badge badge-control">CONTROL GROUP (6 Territories)</span>
+                <h4>Status Quo / Standard Protocol</h4>
+                <p>Chennai, Hyderabad, Ahmedabad, Pune, Patna, Indore</p>
+              </div>
+              <ul class="ab-features">
+                <li><span>•</span> Standard static beat cycles and manual dealer order taking.</li>
+                <li><span>•</span> Traditional batch ERP inventory sync (24-48 hr latency).</li>
+                <li><span>•</span> Standard monthly review cycles without automated inactivity triggers.</li>
+                <li><span>•</span> Historical scheme promotions without algorithmic targeting.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="did-formula-box">
+            <div class="did-title">Mathematical Measurement Specification (Difference-in-Differences):</div>
+            <div class="did-formula">
+              $$\Delta \text{Topline Lift} = \left( \bar{Y}_{\text{Treatment, Post}} - \bar{Y}_{\text{Treatment, Pre}} \right) - \left( \bar{Y}_{\text{Control, Post}} - \bar{Y}_{\text{Control, Pre}} \right)$$
+            </div>
+            <div class="did-meta">
+              <span><strong>Primary Metric:</strong> Throughput per Productive Call (TPC in ₹ Lakhs)</span>
+              <span><strong>Secondary Metric:</strong> Order Fill Rate (%) &amp; Store Re-order Frequency</span>
+              <span><strong>Guardrail:</strong> Gross Contribution Margin % (must not degrade &gt;0.5%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 30-60-90 Day Phased Execution Roadmap -->
+        <div class="roadmap-card" style="margin-top: 24px;">
+          <div class="panel-header">
+            <div>
+              <h3>30-60-90 Day Management Implementation Roadmap</h3>
+              <p class="chart-sub">Operational execution milestones to realize +8% to +12% topline lift</p>
+            </div>
+            <span class="panel-tag">Execution Blueprint</span>
+          </div>
+
+          <div class="roadmap-steps-grid">
+            <div class="roadmap-phase">
+              <div class="phase-badge phase-1">PHASE 1: DAYS 1 – 15</div>
+              <h4>Immediate Leakage Containment</h4>
+              <ul class="phase-bullets">
+                <li>Connect DMS secondary booking to distributor WMS buffers to eliminate ₹51.66L in Ghost Stockouts.</li>
+                <li>Deploy automated WhatsApp re-engagement directives to top 200 dormant Tier A/B accounts.</li>
+                <li>Instantly terminate promotional spending on value-destroying schemes (SCH05 and SCH06).</li>
+              </ul>
+              <div class="phase-target">Target: +₹1.20 Cr immediate monthly revenue lift</div>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-badge phase-2">PHASE 2: DAYS 16 – 45</div>
+              <h4>Field Force & Beat Restructuring</h4>
+              <ul class="phase-bullets">
+                <li>Prune bottom 25% non-productive stops for reps SP005, SP017, SP023 into bi-weekly tele-sales calls.</li>
+                <li>Enforce geofenced check-ins with mandatory 15-minute stay per physical store visit.</li>
+                <li>Reallocate ₹18.5L in promotional savings into targeted WhatsApp pushes for SCH02 (LED Festive).</li>
+              </ul>
+              <div class="phase-target">Target: Field strike rate lifted from 16.5% to 40%+</div>
+            </div>
+
+            <div class="roadmap-phase">
+              <div class="phase-badge phase-3">PHASE 3: DAYS 46 – 60</div>
+              <h4>Cross-Depot Balancing & DiD Audit</h4>
+              <ul class="phase-bullets">
+                <li>Reallocate 16,086 slow-moving units (90d+ aged stock) to deficit territories with dealer liquidation rebates.</li>
+                <li>Run automated Difference-in-Differences statistical audit across Treatment vs Control territories.</li>
+                <li>Roll out validated prescriptive algorithms to remaining 6 control territories.</li>
+              </ul>
+              <div class="phase-target">Target: ₹6.0 Cr working capital unlocked; +10.5% sustained lift</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
-  <!-- Modal for WhatsApp Dispatch Confirmation -->
+  <!-- WhatsApp Dispatch Modal -->
   <div class="modal-overlay" id="dispatchModal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3>📲 WhatsApp Directive Dispatched</h3>
+        <div class="modal-title-wrap">
+          <span class="wa-badge">WhatsApp Direct</span>
+          <h3>Field Beat Alert Dispatched</h3>
+        </div>
         <button class="close-modal" id="closeModalBtn">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-status">Message successfully queued to field rep queue:</p>
-        <div class="whatsapp-preview" id="modalWhatsappContent">
-          <!-- Injected by JS -->
+        <p class="modal-status">Encrypted push sent to sales rep mobile device:</p>
+        <div class="whatsapp-phone-mockup">
+          <div class="wa-header">
+            <span class="wa-avatar">🤖</span>
+            <div>
+              <strong>EazyGrowth Beat Bot</strong>
+              <small>Online • Priority Feed</small>
+            </div>
+          </div>
+          <div class="whatsapp-preview" id="modalWhatsappContent">
+            <!-- Injected by JS -->
+          </div>
         </div>
         <div class="modal-meta">
-          <span>SLA: Delivery guaranteed before 08:30 AM tomorrow</span>
+          <span>Delivery SLA: Guaranteed push before 08:30 AM tomorrow</span>
         </div>
       </div>
       <div class="modal-footer">
+        <button class="btn btn-secondary" id="copyMessageBtn">Copy Text</button>
         <button class="btn btn-primary" id="modalOkBtn">Done</button>
       </div>
     </div>
   </div>
+
+  <!-- Floating Toast Notifications -->
+  <div class="toast-stack" id="toastStack"></div>
 
   <script src="./app.js"></script>
 </body>
